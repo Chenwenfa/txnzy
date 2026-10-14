@@ -123,13 +123,11 @@ nav.scrolled {
 /* 轮播控件 */
 .hero-bar {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
-  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  display: flex; align-items: center; justify-content: center; gap: clamp(26px, 5vw, 48px);
   padding: 0 clamp(20px, 5vw, 56px) 34px;
   opacity: 0; animation: rise 1s 1s cubic-bezier(.2,.8,.3,1) forwards;
 }
 .hero-bar .bar-label { font-size: .64rem; letter-spacing: .4em; color: var(--muted); text-transform: uppercase; }
-.hero-bar .bar-count { font-size: .72rem; letter-spacing: .3em; color: var(--muted); font-variant-numeric: tabular-nums; }
-.hero-bar .bar-count b { color: var(--gold-2); font-weight: 500; }
 
 .hero-dots { display: flex; gap: 12px; align-items: center; }
 .dot {
@@ -208,15 +206,6 @@ nav.scrolled {
 }
 .portrait .media.ok .veil { opacity: 1; }
 .portrait .meta { position: absolute; left: 30px; right: 30px; bottom: 26px; z-index: 2; }
-.portrait .no {
-  display: block; position: relative; padding-top: 15px; margin-bottom: 13px;
-  font-size: .6rem; letter-spacing: .5em; color: var(--gold);
-}
-.portrait .no::before {
-  content: ""; position: absolute; top: 0; left: 0; width: 26px; height: 1px;
-  background: var(--gold); transition: width .5s;
-}
-.portrait:hover .no::before { width: 50px; }
 .portrait .cn { display: block; font-family: var(--serif); font-size: 1.55rem; letter-spacing: .3em; }
 .portrait .en { display: block; margin-top: 9px; font-size: .6rem; letter-spacing: .44em; color: var(--muted); text-transform: uppercase; }
 /* 中缝：细金线 + 居中标记，像双联画的接缝 */
@@ -253,7 +242,7 @@ nav.scrolled {
   color: #45424c; font-size: .62rem; letter-spacing: .34em;
 }
 .wall figure.ok .ph-s { display: none; }
-/* 悬停时底部渐变浮现，衬托编号 */
+/* 悬停时底部渐变浮现 */
 .wall figure::before {
   content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(to top, rgba(10,10,13,.8), transparent 46%);
@@ -266,19 +255,6 @@ nav.scrolled {
   border: 1px solid rgba(255,255,255,.09); transition: border-color .6s;
 }
 .wall figure:hover::after { border-color: rgba(201,168,106,.6); }
-/* 左下角编号：金色短横线 + 编号，悬停浮现 */
-.wall figure .idx {
-  position: absolute; left: 20px; bottom: 16px; z-index: 3;
-  padding-top: 13px; font-size: .58rem; letter-spacing: .34em; color: var(--gold-2);
-  opacity: 0; transform: translateY(8px);
-  transition: opacity .6s, transform .6s;
-}
-.wall figure .idx::before {
-  content: ""; position: absolute; top: 0; left: 0; width: 20px; height: 1px;
-  background: var(--gold); transition: width .5s;
-}
-.wall figure:hover .idx { opacity: 1; transform: none; }
-.wall figure:hover .idx::before { width: 36px; }
 /* 版式：首图双倍大小，其余自动密排填满（想改排布，调整这里的 span 即可） */
 .wall figure:nth-child(1) { grid-column: span 2; grid-row: span 2; }
 
@@ -401,7 +377,6 @@ nav.scrolled {
 .p-btn .ico-pause { display: none; }
 .p-btn.on .ico-play { display: none; }
 .p-btn.on .ico-pause { display: block; }
-.p-hint { margin-left: 8px; font-size: .64rem; letter-spacing: .3em; color: #57545c; font-variant-numeric: tabular-nums; }
 
 /* ---------------- 页脚 ---------------- */
 footer {
@@ -518,7 +493,6 @@ footer p { margin-top: 20px; font-size: .66rem; letter-spacing: .34em; color: #5
   <div class="hero-bar">
     <span class="bar-label">Photo Collection</span>
     <div class="hero-dots" id="dots"></div>
-    <span class="bar-count"><b id="curNum">01</b> / 03</span>
   </div>
 </header>
 
@@ -538,7 +512,6 @@ footer p { margin-top: 20px; font-size: .66rem; letter-spacing: .34em; color: #5
         <span class="ph">TIAN XUNING<br>待放入影像</span>
         <div class="veil"></div>
         <div class="meta">
-          <span class="no">01</span>
           <span class="cn">田栩宁</span>
           <span class="en">Tian Xuning</span>
         </div>
@@ -553,7 +526,6 @@ footer p { margin-top: 20px; font-size: .66rem; letter-spacing: .34em; color: #5
         <span class="ph">ZI YU<br>待放入影像</span>
         <div class="veil"></div>
         <div class="meta">
-          <span class="no">02</span>
           <span class="cn">梓渝</span>
           <span class="en">Zi Yu</span>
         </div>
@@ -573,12 +545,12 @@ footer p { margin-top: 20px; font-size: .66rem; letter-spacing: .34em; color: #5
 
   <div class="wall" id="wall">
     <!-- ♥ 画廊增减：复制/删除一个 <figure>，文件名改成 images 里实际的照片名即可 ♥ -->
-    <figure><img src="images/1.png" alt="画廊1"><span class="ph-s">1.PNG</span><span class="idx">NO.01</span></figure>
-    <figure><img src="images/2.png" alt="画廊2"><span class="ph-s">2.PNG</span><span class="idx">NO.02</span></figure>
-    <figure><img src="images/3.png" alt="画廊3"><span class="ph-s">3.PNG</span><span class="idx">NO.03</span></figure>
-    <figure><img src="images/4.png" alt="画廊4"><span class="ph-s">4.PNG</span><span class="idx">NO.04</span></figure>
-    <figure><img src="images/5.png" alt="画廊5"><span class="ph-s">5.PNG</span><span class="idx">NO.05</span></figure>
-    <figure><img src="images/6.png" alt="画廊6"><span class="ph-s">6.PNG</span><span class="idx">NO.06</span></figure>
+    <figure><img src="images/1.png" alt="画廊1"><span class="ph-s">1.PNG</span></figure>
+    <figure><img src="images/2.png" alt="画廊2"><span class="ph-s">2.PNG</span></figure>
+    <figure><img src="images/3.png" alt="画廊3"><span class="ph-s">3.PNG</span></figure>
+    <figure><img src="images/4.png" alt="画廊4"><span class="ph-s">4.PNG</span></figure>
+    <figure><img src="images/5.png" alt="画廊5"><span class="ph-s">5.PNG</span></figure>
+    <figure><img src="images/6.png" alt="画廊6"><span class="ph-s">6.PNG</span></figure>
   </div>
 </section>
 
@@ -623,7 +595,6 @@ footer p { margin-top: 20px; font-size: .66rem; letter-spacing: .34em; color: #5
         <button class="p-nav" id="bgmNext" aria-label="下一首">
           <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5.5v13L17.5 12z"/></svg>
         </button>
-        <span class="p-hint" id="pCount">01 / 02</span>
       </div>
     </div>
     <audio id="bgmAudio" loop preload="metadata"></audio>
@@ -662,7 +633,6 @@ document.querySelectorAll('.slide img, .media img, .wall img').forEach(img => {
 /* ---------------- 头部轮播 ---------------- */
 const slides = [...document.querySelectorAll('.slide')];
 const dotsBox = document.getElementById('dots');
-const curNum = document.getElementById('curNum');
 let cur = 0, timer = null;
 const AUTO = 6500;
 
@@ -682,7 +652,6 @@ function go(n) {
   const img = s.querySelector('img');
   img.style.animation = 'none'; void img.offsetWidth; img.style.animation = '';
   dots.forEach((d, i) => d.classList.toggle('on', i === cur));
-  curNum.textContent = String(cur + 1).padStart(2, '0');
 }
 function restart() { clearInterval(timer); timer = setInterval(() => go(cur + 1), AUTO); }
 restart();
@@ -782,7 +751,6 @@ const progress = document.getElementById('progress');
 const pKicker = document.querySelector('.p-kicker');
 const pSong = document.querySelector('.p-song');
 const pArtist = document.querySelector('.p-artist');
-const pCount = document.getElementById('pCount');
 
 /* 曲目列表：换歌时把文件放进 audio 文件夹，并修改这里的文件名/歌名 */
 const tracks = [
@@ -803,7 +771,6 @@ function loadTrack(i, autoplay) {
   bgm.src = encodeURI(t.src);
   pSong.textContent = t.song;
   pArtist.textContent = t.artist;
-  pCount.textContent = String(trackIdx + 1).padStart(2, '0') + ' / ' + String(tracks.length).padStart(2, '0');
   pBar.style.width = '0%'; pDot.style.left = '0%';
   tCur.textContent = '00:00'; tDur.textContent = '00:00';
   if (autoplay) bgm.play().catch(needFile);
